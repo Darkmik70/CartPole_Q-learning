@@ -114,8 +114,8 @@ class Q_learning:
             # Reset before new episode
             self._env.reset_env()
 
-            # Epsilon Decay rate 
-            self._epsilon = max(self._epsilon - 0.00001, 0)
+            # # Epsilon Decay rate 
+            # self._epsilon = max(self._epsilon - 0.00001, 0)
             
             # Get episode  rewards
             total_episode_rewards.append(rewards)
