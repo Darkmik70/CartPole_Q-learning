@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env python
 from cart_pole import CartPole
 from q_learning_agent import Q_learning
 
