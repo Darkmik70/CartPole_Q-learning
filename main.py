@@ -6,7 +6,7 @@ def main():
     gamma = 0.7 # Discount rate
     alpha = 0.1 # Learning rate
     epsilon = 0.5 # How much we want to explore 
-    episodes = 100000 # Number of episodes
+    episodes = 40_000 # Number of episodes
 
     isLearning = True # Set to False to test the trained model
 

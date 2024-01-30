@@ -36,6 +36,12 @@ class Q_learning:
         self._epsilon = epsilon
         self._episodes = episodes
         self._isLearning = isLearning
+        self._decayRate = epsilon / episodes
+
+        if self._isLearning:
+            print(f'Learning mode on: training agent on alpha: {self._alpha}, gamma: {self._gamma}, epsilon : {self._epsilon}, with {self._episodes} episodes')
+        else:
+            print('Visualization mode on')
 
         # Initialize Q_Table
         if self._isLearning: 
@@ -65,7 +71,6 @@ class Q_learning:
         
         Args:
             state: Discrete state of the environment
-
         """
         if self._isLearning and np.random.random() < self._epsilon:
             # Choose an action at random with probability epsilon
@@ -114,17 +119,26 @@ class Q_learning:
             # Reset before new episode
             self._env.reset_env()
 
-            # # Epsilon Decay rate 
-            # self._epsilon = max(self._epsilon - 0.00001, 0)
+            # Epsilon Decay rate 
+            self._epsilon = self._epsilon - self._decayRate
             
             # Get episode  rewards
             total_episode_rewards.append(rewards)
             mean_rewards = np.mean(total_episode_rewards[len(total_episode_rewards)-100:])
             
-            # For every 100 display rewards
-            if episode % 100 == 0:
-                print(f'Episode: {episode} Rewards: {rewards}  Epsilon: {self._epsilon:0.2f}  Mean Rewards {mean_rewards:0.1f}')
-            total_episode_rewards.append(np.sum(episode_rewards))
+            if not self._isLearning:
+                # Display results after each episode
+                print(f'Episode: {episode} Rewards: {rewards}')
+            else:
+                # For every 100 display rewards
+                if episode % 100 == 0:
+                    print(f'Episode: {episode} Rewards: {rewards}  Epsilon: {self._epsilon:0.2f}  Mean Rewards {mean_rewards:0.1f}')
+                    total_episode_rewards.append(np.sum(episode_rewards))
+            
+            # Threshold for rewards
+            if mean_rewards >= 1000:
+                print(f' Mean rewards: {mean_rewards} - no need to train model longer')
+                break
         
         # Save Q table to file
         if self._isLearning:
